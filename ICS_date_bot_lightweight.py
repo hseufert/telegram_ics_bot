@@ -1,5 +1,5 @@
 from telegram import Update, InputFile
-from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler, CallbackQueryHandler
+from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler
 import os, sys, re, logging
 from datetime import datetime
 
@@ -48,7 +48,7 @@ async def event(update: Update, context: ContextTypes.DEFAULT_TYPE):
     substring = re.split('_', input_data)
     
     if (1>=len(substring) | 5<=len(substring)):
-        msg = "too short or long"
+        msg = "Please stick to the format: /event NAME_LOCATION_DATE_DATE \n NAME and LOCATION mustn't contain any _"
         await context.bot.send_message(chat_id=update.effective_chat.id, text=msg)
 
     datetime_index = len(substring)-2
@@ -69,10 +69,7 @@ async def event(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
 async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
     send = "Commands: \n"
-    send += "- /heute : Zeigt alle heutigen Gerichte. \n \n"
-    send += "- /morgen : Zeigt alle Gerichte für den nächsten Tag. \n \n"
-    send += "- /poll : Erstellt einen Poll.\nZusätzliche Zeiten als Argument mit Leerzeichen getrennt nach dem Command hinzufügbar.\n"
-    send += "- Argumente zwischen zwei _ werden als Frage des Polls eingesetzt."
+    send += "- /event : Creates an ICS file with the given info. \n Command format: /event NAME_LOCATION_DATE_DATE \n DATE format: DD.MM.YYYY HH:MM \n LOCATION is optional \n \n"
     await context.bot.send_message(chat_id=update.effective_chat.id, text=send)
 
 if __name__ == '__main__':
