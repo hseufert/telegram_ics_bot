@@ -34,7 +34,6 @@ def parseStringToDate(string: str):
     for format in formats:
         try:
             parsed_date = datetime.strptime(string, format)
-            print(parsed_date)
             return parsed_date
         except ValueError:
             continue
@@ -47,9 +46,9 @@ async def event(update: Update, context: ContextTypes.DEFAULT_TYPE):
     input_data = " ".join(context.args)
     substring = re.split('_', input_data)
     
-    if (1>=len(substring) | 5<=len(substring)):
-        msg = "Please stick to the format: /event NAME_LOCATION_DATE_DATE \n NAME and LOCATION mustn't contain any _"
-        await context.bot.send_message(chat_id=update.effective_chat.id, text=msg)
+    if (1>=len(substring) or 5<=len(substring)):
+        msg = "Please stick to the format: /event NAME_LOCATION_DATE_DATE \nNAME and LOCATION mustn't contain any _"
+        return await context.bot.send_message(chat_id=update.effective_chat.id, text=msg)
 
     datetime_index = len(substring)-2
     
@@ -57,8 +56,8 @@ async def event(update: Update, context: ContextTypes.DEFAULT_TYPE):
     date_end =parseStringToDate(substring[datetime_index+1])
     if (date_start == ValueError or date_end == ValueError):
         msg = "Please stick to the format: dd.mm.yyyy hh:mm"
-        await context.bot.send_message(chat_id=update.effective_chat.id, text=msg)
-
+        return await context.bot.send_message(chat_id=update.effective_chat.id, text=msg)
+    
     datetime_start_string = parseDatetoString(date_start)
     datetime_end_string = parseDatetoString(date_end)
     output_data = ICS_LAYOUT_FRONT.format(name=substring[0], summary= substring[0], datetime_start = datetime_start_string, datetime_end = datetime_end_string)
@@ -69,7 +68,7 @@ async def event(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
 async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
     send = "Commands: \n"
-    send += "- /event : Creates an ICS file with the given info. \n Command format: /event NAME_LOCATION_DATE_DATE \n DATE format: DD.MM.YYYY HH:MM \n LOCATION is optional \n \n"
+    send += "- /event : Creates an ICS file with the given info. \nCommand format: \n/event NAME_LOCATION_DATE_DATE \nDATE format: DD.MM.YYYY HH:MM \nLOCATION is optional \n \n"
     await context.bot.send_message(chat_id=update.effective_chat.id, text=send)
 
 if __name__ == '__main__':
