@@ -68,8 +68,18 @@ async def event(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
 async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
     send = "Commands: \n"
-    send += "- /event : Creates an ICS file with the given info. \nCommand format: \n/event NAME_LOCATION_DATE_DATE \nDATE format: DD.MM.YYYY HH:MM \nLOCATION is optional \n \n"
+    send += getHelpString()
     await context.bot.send_message(chat_id=update.effective_chat.id, text=send)
+
+#Commands for easy integration into other bots
+def getHandlers():
+    handlers = []
+    handlers.append(CommandHandler('event', callback=event, has_args=True))
+    return handlers
+
+def getHelpString():
+    return "- /event : Creates an ICS file with the given info. \nCommand format: \n/event NAME_LOCATION_DATE_DATE \nDATE format: DD.MM.YYYY HH:MM \nLOCATION is optional \n \n"
+#END: Commands for easy integration into other bots
 
 if __name__ == '__main__':
 
