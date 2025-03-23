@@ -22,8 +22,10 @@ DTSTART;TZID=Europe/Berlin:{datetime_start}
 DTEND;TZID=Europe/Berlin:{datetime_end}
 NAME:{name}
 SUMMARY:{summary}"""
+
 ICS_LAYOUT_LOCATION = """
 LOCATION:{location}"""
+
 ICS_LAYOUT_END = """
 END:VEVENT
 END:VCALENDAR"""
