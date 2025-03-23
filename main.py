@@ -1,4 +1,4 @@
-import ICS_date_bot_lightweight as ICS_bot
+import bot_helpers.ICS_date_bot_lightweight as ICS_bot
 
 from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler
